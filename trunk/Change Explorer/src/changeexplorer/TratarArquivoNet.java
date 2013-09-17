@@ -34,10 +34,12 @@ public class TratarArquivoNet {
 			int contador = 0;
 			this.nomeClasses = new ArrayList<String>();
 			
+			String aspas = "" + (char) 34;
 			
 			while (contador < numeroClasses) {
 				
-				nomeClasses.add((arquivo.readLine().split(" ")[1]));
+				
+				nomeClasses.add((arquivo.readLine().split(" ")[1]).replaceAll(aspas, ""));
 				contador++;
 				
 			}

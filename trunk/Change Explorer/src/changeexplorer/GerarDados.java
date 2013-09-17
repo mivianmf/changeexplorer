@@ -1,7 +1,11 @@
 package changeexplorer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import simulacaometodos.ObjetoSim;
 
 public class GerarDados {
 
@@ -9,10 +13,9 @@ public class GerarDados {
 	private ArrayList<String> classes, lscc, in, out, tubes, tendrils,
 			disconnected;
 	private ArrayList<Integer> componentes;
-	private DefaultMutableTreeNode raiz;
-	private int numeroClasses;
-	private int totalLSSC = 0, totalIN = 0, totalOUT = 0, totalTUBES = 0,
-			totalTENDRILS = 0, totalDISCONNECTED = 0;
+	private int numeroClasses, totalLSSC = 0, totalIN = 0, totalOUT = 0,
+			totalTUBES = 0, totalTENDRILS = 0, totalDISCONNECTED = 0;
+	private HashMap<String, ArrayList<ObjetoSim>> mapMetodos;
 
 	public GerarDados(ArrayList<simulacaometodos.ObjetoSim> objetos,
 			ArrayList<String> classes, ArrayList<Integer> componentes) {
@@ -21,6 +24,7 @@ public class GerarDados {
 		this.componentes = componentes;
 		this.numeroClasses = classes.size();
 		inicializarArrays();
+		mapearMetodos();
 	}
 
 	private void inicializarArrays() {
@@ -30,7 +34,7 @@ public class GerarDados {
 		this.tubes = new ArrayList<String>();
 		this.tendrils = new ArrayList<String>();
 		this.disconnected = new ArrayList<String>();
-		
+
 		classesEComponentes();
 	}
 
@@ -41,16 +45,29 @@ public class GerarDados {
 
 		String classe;
 		Integer codigo;
-		String aspas = "" + (char)34;
-		String espaco = "" + (char)32;
-
 		for (int i = 0; i < classes.size(); i++) {
-			classe = classes.get(i).replaceAll(aspas, espaco);
+			classe = classes.get(i);
+			System.out.println("" + classe);
 			codigo = componentes.get(i);
 			codigosComponentes(codigo, classe);
 		}
 	}
 
+	private void mapearMetodos() {
+
+		ArrayList<ObjetoSim> aux;
+		String classe;
+		ObjetoSim obj;
+
+		for (int i = 0; i < objetos.size(); i++) {
+			obj = objetos.get(i);
+			classe = obj.classe;
+			aux = this.mapMetodos.get(classe);
+			aux.add(obj);
+			mapMetodos.put(classe, aux);
+		}
+	}
+	
 	public void codigosComponentes(int codigo, String classe) {
 
 		switch (codigo) {
@@ -90,6 +107,16 @@ public class GerarDados {
 
 	}
 
+	private void iniciarMap() {
+		ArrayList<ObjetoSim> aux;
+
+		for (int i = 0; i < classes.size(); i++) {
+			aux = new ArrayList<ObjetoSim>();
+			mapMetodos.put(classes.get(i), aux);
+		}
+
+	}
+
 	public ArrayList<String> getDisconnected() {
 		return disconnected;
 	}
@@ -121,19 +148,19 @@ public class GerarDados {
 	public int getTotalIN() {
 		return totalIN;
 	}
-	
+
 	public int getTotalLSSC() {
 		return totalLSSC;
 	}
-	
+
 	public int getTotalOUT() {
 		return totalOUT;
 	}
-	
+
 	public int getTotalTUBES() {
 		return totalTUBES;
 	}
-	
+
 	public int getTotalTENDRILS() {
 		return totalTENDRILS;
 	}
