@@ -4,6 +4,9 @@
  */
 package changeexplorer;
 
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -20,6 +23,7 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	JTable tabelaLSCC, tabelaIN, tabelaOUT, tabelaTENDRILS, tabelaTUBES,
 			tabelaDISCONNECTED;
 	GerarDados dados;
+	int [] vetorLscc;
 
 	/**
 	 * Creates new form TelaMostrarDados
@@ -45,120 +49,148 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		gerarTUBES();
 		gerarTENDRILS();
 		gerarDISCONNECTED();
-		
 	}
 
 	public void gerarLSCC() {
 
+		ArrayList <Classes> lscc = dados.getLscc();
+		
+		
+		
+		int x =  lscc.get(0).pesoModificação;
+		System.out.println("$"+x);
+		vetorLscc = new int [x+1];
+		
+		
 		tabelaLSCC = new javax.swing.JTable();
-
 		tabelaLSCC.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null } }, 
-						
-						new String[] { "Classe", "Impacto"}));
+				new Object[lscc.size()][2], 
+				new String[] { "Classe", "Impacto"}));
 		
 		jScrollPane1.setViewportView(tabelaLSCC);
+		jTabbedPane1.addTab("LSCC - " + lscc.size(), jScrollPane1);
 
-		jTabbedPane1.addTab("LSCC - " + dados.getTotalLSSC(), jScrollPane1);
-
-	}
-
-	public void gerarTUBES() {
-
-		tabelaTUBES = new javax.swing.JTable();
-
-		tabelaTUBES.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } }, 
+		int aux;
+		String auxiliar;
 		
-						new String[] { "Classe", "Impacto"}));
+		for (int i = 0; i < lscc.size(); i++) {
+			Classes c = lscc.get(i);
+			tabelaLSCC.setValueAt(c.nome, i, 0);
+            tabelaLSCC.setValueAt(c.pesoModificação, i, 1);
+           vetorLscc[c.pesoModificação]++;
+		}
 		
-		JScrollPane pane2 = new JScrollPane();
-
-		pane2.setViewportView(tabelaTUBES);
-
-		jTabbedPane1.addTab("TUBES - " + dados.getTotalTUBES(), pane2);
-
-	}
-
-	public void gerarTENDRILS() {
-
-		tabelaTENDRILS = new javax.swing.JTable();
-
-		tabelaTENDRILS.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } }, 
-						
-						new String[] { "Classe", "Impacto"}));
-		
-		JScrollPane pane3 = new JScrollPane();
-
-		pane3.setViewportView(tabelaTENDRILS);
-
-		jTabbedPane1.addTab("TENDRILS - " + dados.getTotalTENDRILS(), pane3);
-
 	}
 
 	public void gerarIN() {
 
+		ArrayList <Classes> in = dados.getIn();
+		
 		tabelaIN = new javax.swing.JTable();
 
 		tabelaIN.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } },
+				new Object[in.size()][2], 
+				new String[] { "Classe", "Impacto"}));
 		
-						new String[] { "Classe", "Impacto"}));
+		JScrollPane pane2 = new JScrollPane();
+		
+		pane2.setViewportView(tabelaIN);
+		jTabbedPane1.addTab("IN - " + in.size(), pane2);
 
-		JScrollPane pane4 = new JScrollPane();
-
-		pane4.setViewportView(tabelaIN);
-
-		jTabbedPane1.addTab("IN - " + dados.getTotalIN(), pane4);
-
+		for (int i = 0; i < in.size(); i++) {
+			tabelaIN.setValueAt(in.get(i).nome, i, 0);
+            tabelaIN.setValueAt(in.get(i).pesoModificação, i, 1);
+		}
+		
 	}
-
+	
 	public void gerarOUT() {
 
+		ArrayList <Classes> out = dados.getOut();
+		
 		tabelaOUT = new javax.swing.JTable();
 
 		tabelaOUT.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } }, 
-						
-						new String[] { "Classe", "Impacto"}));
+				new Object[out.size()][2], 
+				new String[] { "Classe", "Impacto"}));
 		
+		JScrollPane pane3 = new JScrollPane();
+		
+		pane3.setViewportView(tabelaOUT);
+		jTabbedPane1.addTab("OUT - " + out.size(), pane3);
 
-		JScrollPane pane5 = new JScrollPane();
-		pane5.setViewportView(tabelaOUT);
-
-		jTabbedPane1.addTab("OUT - " + dados.getTotalOUT(), pane5);
-
+		for (int i = 0; i < out.size(); i++) {
+			tabelaOUT.setValueAt(out.get(i).nome, i, 0);
+            tabelaOUT.setValueAt(out.get(i).pesoModificação, i, 1);
+		}		
 	}
+	
+	public void gerarTUBES() {
 
+		ArrayList <Classes> tubes = dados.getTubes();
+		
+		tabelaTUBES = new javax.swing.JTable();
+
+		tabelaTUBES.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[tubes.size()][2], 
+				new String[] { "Classe", "Impacto"}));
+		
+		JScrollPane pane4 = new JScrollPane();
+		
+		pane4.setViewportView(tabelaTUBES);
+		jTabbedPane1.addTab("TUBES - " +tubes.size(), pane4);
+
+		for (int i = 0; i < tubes.size(); i++) {
+			tabelaIN.setValueAt(tubes.get(i).nome, i, 0);
+            tabelaIN.setValueAt(tubes.get(i).pesoModificação, i, 1);
+		}
+		
+	}
+	
+	public void gerarTENDRILS() {
+
+		ArrayList <Classes> tendrils = dados.getTendrils();
+		
+		tabelaTENDRILS = new javax.swing.JTable();
+
+		tabelaTENDRILS.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[tendrils.size()][2], 
+				new String[] { "Classe", "Impacto"}));
+		
+		JScrollPane pane5 = new JScrollPane();
+		
+		pane5.setViewportView(tabelaTENDRILS);
+		jTabbedPane1.addTab("TENDRILS - " + tendrils.size(), pane5);
+
+		for (int i = 0; i < tendrils.size(); i++) {
+			tabelaTENDRILS.setValueAt(tendrils.get(i).nome, i, 0);
+            tabelaTENDRILS.setValueAt(tendrils.get(i).pesoModificação, i, 1);
+		}
+	}
+	
 	public void gerarDISCONNECTED() {
 
+		ArrayList <Classes> disconnected = dados.getDisconnected();
+		
 		tabelaDISCONNECTED = new javax.swing.JTable();
 
 		tabelaDISCONNECTED.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } }, 
-						
-						new String[] { "Classe", "Impacto"}));
+				new Object[disconnected.size()][2], 
+				new String[] { "Classe", "Impacto"}));
 		
+		JScrollPane pane3 = new JScrollPane();
+		
+		pane3.setViewportView(tabelaDISCONNECTED);
+		jTabbedPane1.addTab("DISCONNECTED - " + disconnected.size(), pane3);
 
-		JScrollPane pane6 = new JScrollPane();
-		pane6.setViewportView(tabelaDISCONNECTED);
-
-		jTabbedPane1.addTab("DISCONNECTED - " + dados.getTotalDISCONNECTED(), pane6);
-
+		for (int i = 0; i < disconnected.size(); i++) {
+			tabelaDISCONNECTED.setValueAt(disconnected.get(i).nome, i, 0);
+            tabelaDISCONNECTED.setValueAt(disconnected.get(i).pesoModificação, i, 1);
+		}
+		
 	}
-
+	
+	
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
