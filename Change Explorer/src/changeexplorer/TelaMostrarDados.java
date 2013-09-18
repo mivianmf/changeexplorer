@@ -69,9 +69,6 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		
 		jScrollPane1.setViewportView(tabelaLSCC);
 		jTabbedPane1.addTab("LSCC - " + lscc.size(), jScrollPane1);
-
-		int aux;
-		String auxiliar;
 		
 		for (int i = 0; i < lscc.size(); i++) {
 			Classes c = lscc.get(i);
