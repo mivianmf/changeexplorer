@@ -1,7 +1,11 @@
 package changeexplorer;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Timer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -9,163 +13,235 @@ import simulacaometodos.ObjetoSim;
 
 public class GerarDados {
 
-	private ArrayList<simulacaometodos.ObjetoSim> objetos;
-	private ArrayList<String> classes, lscc, in, out, tubes, tendrils,
-			disconnected;
+	private ArrayList<ObjetoSim> metodos;
+	private ArrayList<String> classes;
 	private ArrayList<Integer> componentes;
-	private int numeroClasses, totalLSSC = 0, totalIN = 0, totalOUT = 0,
-			totalTUBES = 0, totalTENDRILS = 0, totalDISCONNECTED = 0;
-	private HashMap<String, ArrayList<ObjetoSim>> mapMetodos;
-
-	public GerarDados(ArrayList<simulacaometodos.ObjetoSim> objetos,
-			ArrayList<String> classes, ArrayList<Integer> componentes) {
-		this.objetos = objetos;
+	private ArrayList<Classes> objetosClasses,lscc, in, out, tubes, tendrils, disconnected;
+	private HashMap<String, ArrayList<ObjetoSim>> map;
+	
+	public GerarDados (ArrayList<ObjetoSim> metodos, ArrayList<String> classes, ArrayList<Integer> componentes){
+			
 		this.classes = classes;
 		this.componentes = componentes;
-		this.numeroClasses = classes.size();
-		inicializarArrays();
+		this.metodos = metodos;
+		
+		lscc = new ArrayList<Classes>();
+		in = new ArrayList<Classes>();
+		out = new ArrayList<Classes>();
+		tubes = new ArrayList<Classes>();
+		tendrils = new ArrayList<Classes>();
+		disconnected = new ArrayList<Classes>();
+		
 		mapearMetodos();
+		mapearClasses();
+		ordenarArrays();
 	}
-
-	private void inicializarArrays() {
-		this.lscc = new ArrayList<String>();
-		this.in = new ArrayList<String>();
-		this.out = new ArrayList<String>();
-		this.tubes = new ArrayList<String>();
-		this.tendrils = new ArrayList<String>();
-		this.disconnected = new ArrayList<String>();
-
-		classesEComponentes();
-	}
-
-	/*
-	 * Classe destinada a distribuir as classes em seus respectivos componentes
-	 */
-	public void classesEComponentes() {
-
-		String classe;
-		Integer codigo;
+		
+	
+	public void iniciarMap(){
+		
+		map = new HashMap<String, ArrayList<ObjetoSim>>();
+		ArrayList<ObjetoSim> aux;
+		
 		for (int i = 0; i < classes.size(); i++) {
-			classe = classes.get(i);
-			System.out.println("" + classe);
-			codigo = componentes.get(i);
-			codigosComponentes(codigo, classe);
-		}
+			aux = new ArrayList<ObjetoSim>();
+			map.put(classes.get(i), aux);
+		}		
 	}
-
-	private void mapearMetodos() {
-
+	
+	public void mapearMetodos(){
+		
+		iniciarMap();
+		
+		//variaveis auxiliares
 		ArrayList<ObjetoSim> aux;
 		String classe;
 		ObjetoSim obj;
-
-		for (int i = 0; i < objetos.size(); i++) {
-			obj = objetos.get(i);
+		
+		for (int i = 0; i < metodos.size(); i++) {
+			obj = metodos.get(i);
 			classe = obj.classe;
-			aux = this.mapMetodos.get(classe);
+			aux = map.get(classe);
 			aux.add(obj);
-			mapMetodos.put(classe, aux);
+			map.put(classe, aux);
 		}
+		
+		//tenho os métodos mapeados nas classes
+		gerarValoresClasses();
 	}
 	
-	public void codigosComponentes(int codigo, String classe) {
-
-		switch (codigo) {
+	
+	/*
+	 * Metodo para gerar um array com as Classes
+	 */
+	private void gerarValoresClasses(){
+		
+		String classe;
+		int passos;
+		objetosClasses = new ArrayList<Classes>();
+		
+		for (int i = 0; i < classes.size(); i++) {
+			classe = classes.get(i);
+			passos = map.get(classe).size();
+			objetosClasses.add(new Classes(classe,passos));
+		}	
+	}
+	
+	private void mapearClasses(){
+		
+		Integer componente;
+		String classe;
+		for (int i = 0; i < objetosClasses.size(); i++) {
+			componente = componentes.get(i);
+			classe = objetosClasses.get(i).getNome();
+			inserirArray(componente,objetosClasses.get(i));
+		}
+	
+	}
+		
+	private void inserirArray(Integer componente, Classes objetosClasses){
+		
+		switch (componente) {
 		case 1:
-			this.lscc.add(classe);
-			this.totalLSSC++;
+			lscc.add(objetosClasses);
 			break;
-
+			
 		case 2:
-			this.in.add(classe);
-			totalIN++;
+			in.add(objetosClasses);
 			break;
-
+			
 		case 3:
-			this.out.add(classe);
-			totalOUT++;
+			out.add(objetosClasses);
 			break;
-
+			
 		case 4:
-			this.tubes.add(classe);
-			totalTUBES++;
+			tubes.add(objetosClasses);
 			break;
-
+			
 		case 5:
-			this.tendrils.add(classe);
-			totalTENDRILS++;
+			tendrils.add(objetosClasses);
 			break;
-
+			
 		case 0:
-			this.disconnected.add(classe);
-			totalDISCONNECTED++;
+			disconnected.add(objetosClasses);
 			break;
 
 		default:
 			break;
 		}
+		
+	
+	}
+	
+	private void ordenarArrays(){
 
+		//ordenar os arrays dos componentes
+		lscc = this.ordenarClasses(lscc);
+		in = this.ordenarClasses(in);
+		out = this.ordenarClasses(out);
+		tubes = this.ordenarClasses(tubes);
+		tendrils = this.ordenarClasses(tendrils);
+		disconnected = this.ordenarClasses(disconnected);
+		
+		//ordenar vetor de classes ()
+		objetosClasses = this.ordenarClasses(objetosClasses);
+		
+		
+		//ordenar array de métodos
+		metodos = this.ordenarMetodos();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Classes> ordenarClasses(ArrayList<Classes> objetos ){
+	
+		Collections.sort (objetos, new Comparator() {  
+			public int compare(Object obj1, Object obj2) {  
+				Classes a1 =(Classes) obj1;  
+				Classes a2 = (Classes) obj2;  
+				if (a1.pesoModificação > a2.pesoModificação)
+					return -1;
+				else{
+					if (a1.pesoModificação < a2.pesoModificação)
+						return 1;
+					else
+						return 0;
+				}
+			}  
+		});
+	
+		return objetos;
+	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ArrayList<ObjetoSim> ordenarMetodos(){
+		
+		Collections.sort (this.metodos, new Comparator() {  
+			public int compare(Object obj1, Object obj2) {  
+				ObjetoSim a1 =(ObjetoSim) obj1;  
+				ObjetoSim a2 = (ObjetoSim) obj2;  
+				if (a1.caminhoMetodo.size() > a2.caminhoMetodo.size())
+					return -1;
+				else{
+					if (a1.caminhoMetodo.size() < a2.caminhoMetodo.size())
+						return 1;
+					else
+						return 0;
+				}
+
+			}  
+		});
+	
+		return metodos;
 	}
 
-	private void iniciarMap() {
-		ArrayList<ObjetoSim> aux;
+	//Gets
 
-		for (int i = 0; i < classes.size(); i++) {
-			aux = new ArrayList<ObjetoSim>();
-			mapMetodos.put(classes.get(i), aux);
-		}
-
-	}
-
-	public ArrayList<String> getDisconnected() {
-		return disconnected;
-	}
-
-	public ArrayList<String> getIn() {
-		return in;
-	}
-
-	public ArrayList<String> getLscc() {
+	public ArrayList<Classes> getLscc() {
 		return lscc;
 	}
-
-	public ArrayList<String> getOut() {
+	
+	public ArrayList<Classes> getIn() {
+		return in;
+	}
+	
+	public ArrayList<Classes> getOut() {
 		return out;
 	}
-
-	public ArrayList<String> getTendrils() {
-		return tendrils;
-	}
-
-	public ArrayList<String> getTubes() {
+	
+	public ArrayList<Classes> getTubes() {
 		return tubes;
 	}
-
-	public int getTotalDISCONNECTED() {
-		return totalDISCONNECTED;
+	
+	public ArrayList<Classes> getTendrils() {
+		return tendrils;
 	}
-
-	public int getTotalIN() {
-		return totalIN;
+	
+	public ArrayList<Classes> getDisconnected() {
+		return disconnected;
 	}
-
-	public int getTotalLSSC() {
-		return totalLSSC;
+	
+	
+	public ArrayList<Classes> getObjetosClasses() {
+		return objetosClasses;
 	}
-
-	public int getTotalOUT() {
-		return totalOUT;
+	
+	public ArrayList<ObjetoSim> getMetodos() {
+		return metodos;
 	}
-
-	public int getTotalTUBES() {
-		return totalTUBES;
+	
+	public HashMap<String, ArrayList<ObjetoSim>> getMap() {
+		return map;
 	}
-
-	public int getTotalTENDRILS() {
-		return totalTENDRILS;
-	}
-
+	
 }
+
+
+
+
+
 
 /*
  * "Legenda Clu"
