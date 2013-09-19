@@ -62,7 +62,7 @@ class TelaInicial extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Analisar PropagaÃ§Ã£o");
+        jLabel1.setText("Analisar Propagação");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
