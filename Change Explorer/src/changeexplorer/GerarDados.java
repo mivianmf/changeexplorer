@@ -13,11 +13,11 @@ import simulacaometodos.ObjetoSim;
 
 public class GerarDados {
 
-	private ArrayList<ObjetoSim> metodos;
-	private ArrayList<String> classes;
-	private ArrayList<Integer> componentes;
-	private ArrayList<Classes> objetosClasses,lscc, in, out, tubes, tendrils, disconnected;
-	private HashMap<String, ArrayList<ObjetoSim>> map;
+	public ArrayList<ObjetoSim> metodos;
+	public ArrayList<String> classes;
+	public ArrayList<Integer> componentes;
+	public ArrayList<Classes> objetosClasses,lscc, in, out, tubes, tendrils, disconnected;
+	public HashMap<String, ArrayList<ObjetoSim>> map;
 	
 	public GerarDados (ArrayList<ObjetoSim> metodos, ArrayList<String> classes, ArrayList<Integer> componentes){
 			
@@ -66,7 +66,7 @@ public class GerarDados {
 			map.put(classe, aux);
 		}
 		
-		//tenho os métodos mapeados nas classes
+		//tenho os mï¿½todos mapeados nas classes
 		gerarValoresClasses();
 	}
 	
@@ -76,14 +76,15 @@ public class GerarDados {
 	 */
 	private void gerarValoresClasses(){
 		
-		String classe;
+		String classe, componente;
 		int passos;
 		objetosClasses = new ArrayList<Classes>();
 		
 		for (int i = 0; i < classes.size(); i++) {
 			classe = classes.get(i);
+			componente = this.codigoComponente(componentes.get(i));
 			passos = map.get(classe).size();
-			objetosClasses.add(new Classes(classe,passos));
+			objetosClasses.add(new Classes(classe, componente,passos));
 		}	
 	}
 	
@@ -129,9 +130,44 @@ public class GerarDados {
 		default:
 			break;
 		}
-		
-	
 	}
+	
+private String codigoComponente(int codigo){
+		
+	String componente = null;
+	
+		switch (codigo) {
+		case 1:
+			componente = "LSCC";
+			break;
+			
+		case 2:
+			componente = "IN";
+			break;
+			
+		case 3:
+			componente = "OUT";
+			break;
+			
+		case 4:
+			componente = "TUBES";
+			break;
+			
+		case 5:
+			componente = "TENDRILS";
+			break;
+			
+		case 0:
+			componente = "DISCONNECTED";
+			break;
+
+		default:
+			break;
+		}
+		
+		return componente;
+	}
+	
 	
 	private void ordenarArrays(){
 
@@ -147,7 +183,7 @@ public class GerarDados {
 		objetosClasses = this.ordenarClasses(objetosClasses);
 		
 		
-		//ordenar array de métodos
+		//ordenar array de mï¿½todos
 		metodos = this.ordenarMetodos();
 	}
 	
@@ -160,10 +196,10 @@ public class GerarDados {
 			public int compare(Object obj1, Object obj2) {  
 				Classes a1 =(Classes) obj1;  
 				Classes a2 = (Classes) obj2;  
-				if (a1.pesoModificação > a2.pesoModificação)
+				if (a1.pesoModificacao > a2.pesoModificacao)
 					return -1;
 				else{
-					if (a1.pesoModificação < a2.pesoModificação)
+					if (a1.pesoModificacao < a2.pesoModificacao)
 						return 1;
 					else
 						return 0;
@@ -174,8 +210,6 @@ public class GerarDados {
 		return objetos;
 	}
 	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ArrayList<ObjetoSim> ordenarMetodos(){
 		
 		Collections.sort (this.metodos, new Comparator() {  

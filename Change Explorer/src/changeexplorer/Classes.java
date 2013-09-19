@@ -7,12 +7,15 @@ import simulacaometodos.ObjetoSim;
 public class Classes {
 	
 	public String nome;
-	public int pesoModificação;
+	public String componente;
+	public int pesoModificacao;
 	
-	public Classes(String nome, int pesoModificação) {
+	
+	public Classes(String nome, String componente, int pesoModificacao) {
 		super();
 		this.nome = nome;
-		this.pesoModificação = pesoModificação;
+		this.componente = componente;
+		this.pesoModificacao = pesoModificacao;
 		
 	}
 
@@ -21,6 +24,6 @@ public class Classes {
 	}
 
 	public int getPesoModificação() {
-		return pesoModificação;
+		return pesoModificacao;
 	}
 }
