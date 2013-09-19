@@ -18,6 +18,7 @@ public class GerarDados {
 	public ArrayList<Integer> componentes;
 	public ArrayList<Classes> objetosClasses,lscc, in, out, tubes, tendrils, disconnected;
 	public HashMap<String, ArrayList<ObjetoSim>> map;
+	public HashMap<String, String> classeComponente;
 	
 	public GerarDados (ArrayList<ObjetoSim> metodos, ArrayList<String> classes, ArrayList<Integer> componentes){
 			
@@ -34,9 +35,21 @@ public class GerarDados {
 		
 		mapearMetodos();
 		mapearClasses();
+		iniciarHash();
 		ordenarArrays();
+		
 	}
 		
+	
+	public void iniciarHash() {
+
+		this.classeComponente = new HashMap<String, String>();
+
+		for (Classes classe : this.objetosClasses) {
+
+			this.classeComponente.put(classe.nome, classe.componente);
+		}
+	}
 	
 	public void iniciarMap(){
 		
