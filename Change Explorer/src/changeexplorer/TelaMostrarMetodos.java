@@ -6,6 +6,7 @@ package changeexplorer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -32,7 +33,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
     	
     	initComponents();
         try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +74,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        MostrarNomeClasse = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabela = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -115,6 +116,11 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tabela);
 
         jButton1.setText("Detalhar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,7 +130,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
+                    .addComponent(MostrarNomeClasse, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -137,7 +143,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(MostrarNomeClasse, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -148,10 +154,34 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    	int linhaSelecionada = tabela.getSelectedRow();
+
+		if (linhaSelecionada == -1) {
+			Erro("ERRO", "Selecione a linha da tabela a ser detalhada");
+		} else {
+			
+			Vector metodos = objeto.get(linhaSelecionada).caminhoMetodo;
+			TelaMostrarCaminho  telaCaminho = new TelaMostrarCaminho(metodos);
+			telaCaminho.setLocation(500, 200);
+			telaCaminho.setVisible(true);
+			telaCaminho.setResizable(false);
+			System.out.println("Linha " + linhaSelecionada);
+		}
+    		
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+	public void Erro(String titulo, String mensagem) {
+		javax.swing.JOptionPane.showMessageDialog(new javax.swing.JFrame(),
+				mensagem, titulo, javax.swing.JOptionPane.ERROR_MESSAGE);
+	}
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel MostrarNomeClasse;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tabela;
