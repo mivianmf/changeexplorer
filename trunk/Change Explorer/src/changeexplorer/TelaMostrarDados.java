@@ -68,7 +68,7 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		// vetorLscc = new int [x+1];
 
 		tabelaLSCC.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[lscc.size()][3], new String[] { "", "Classe",
+				new Object[lscc.size()][2], new String[] { "Classe",
 						"Impacto" }));
 
 		jScrollPane1.setViewportView(tabelaLSCC);
@@ -204,14 +204,14 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setBackground(new java.awt.Color(204, 204, 204));
 
-		jButton1.setText("Gerar Gr√°ficos");
+		jButton1.setText("Gerar Gr·ficos");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
 			}
 		});
 
-		jButton2.setText("Exibir Pontos Cr√≠ticos");
+		jButton2.setText("Exibir Pontos CrÌticos");
 		jButton2.setMaximumSize(new java.awt.Dimension(101, 23));
 		jButton2.setMinimumSize(new java.awt.Dimension(101, 23));
 		jButton2.setPreferredSize(new java.awt.Dimension(101, 23));
@@ -436,32 +436,26 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		if (tabelaLSCC.isShowing()) {
 			tabAux = tabelaLSCC;
 			classes = dados.lscc;
-			System.out.println("LSCC ON");
 		} else {
 			if (tabelaIN.isShowing()) {
 				tabAux = tabelaIN;
 				classes = dados.in;
-				System.out.println("IN ON");
 			} else {
 				if (tabelaOUT.isShowing()) {
 					tabAux = tabelaOUT;
 					classes = dados.out;
-					System.out.println("OUT ON");
 				} else {
 					if (tabelaTUBES.isShowing()) {
 						tabAux = tabelaTUBES;
 						classes = dados.tubes;
-						System.out.println("TUBES ON");
 					} else {
 						if (tabelaTENDRILS.isShowing()) {
 							tabAux = tabelaTENDRILS;
 							classes = dados.tendrils;
-							System.out.println("TENDRILS ON");
 						} else {
 							if (tabelaDISCONNECTED.isShowing()) {
 								tabAux = tabelaDISCONNECTED;
 								classes = dados.disconnected;
-								System.out.println("DISCONNECTED ON");
 							}
 						}
 					}
