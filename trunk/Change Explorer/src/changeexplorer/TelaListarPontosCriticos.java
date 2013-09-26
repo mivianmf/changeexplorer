@@ -6,6 +6,7 @@ package changeexplorer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -24,15 +25,18 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame {
 	ArrayList<ObjetoSim> objeto;
 	ArrayList<Classes> classes;
 	HashMap<String, String> classeComponente;
+	GerarDados dados;
 
 	public TelaListarPontosCriticos(ArrayList<ObjetoSim> objeto,
-			ArrayList<Classes> classes, int qtd, String nivel) {
+			ArrayList<Classes> classes, int qtd, String nivel, GerarDados dados) {
 
 		this.nivel = nivel;
 		this.qtd = qtd;
 		this.objeto = objeto;
 		this.classes = classes;
+		this.dados = dados;	
 		iniciarHash();
+
 		
 		initComponents();
 		if (nivel.equalsIgnoreCase("classes")) {
@@ -40,28 +44,27 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame {
 		} else {
 			this.iniciarTabelaObjetos();
 		}
-		
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		
-		
+
 	}
 
 	private void iniciarTabelaObjetos() {
 
 		tabela.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[qtd][4], new String[] { "Componente",
-						"Classe", "Metodo", "Impacto" }));
+				new Object[qtd][4], new String[] { "Componente", "Classe",
+						"Metodo", "Impacto" }));
 
 		jScrollPane1.setViewportView(tabela);
 		String classe;
-		
+
 		for (int i = 0; i < qtd; i++) {
 			ObjetoSim c = objeto.get(i);
 			classe = c.classe;
@@ -75,8 +78,8 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame {
 	private void iniciarTabelaClasses() {
 
 		tabela.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[qtd][3], new String[] { "Componente",
-						"Classe", "Impacto" }));
+				new Object[qtd][3], new String[] { "Componente", "Classe",
+						"Impacto" }));
 
 		jScrollPane1.setViewportView(tabela);
 
@@ -105,93 +108,142 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame {
 	 */
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed"
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	// <editor-fold defaultstate="collapsed"
+	// desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabela = new javax.swing.JTable();
-        botaoDetalhar = new javax.swing.JButton();
+		jPanel1 = new javax.swing.JPanel();
+		jLabel1 = new javax.swing.JLabel();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		tabela = new javax.swing.JTable();
+		botaoDetalhar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+		jPanel1.setBorder(javax.swing.BorderFactory
+				.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Lista de Pontos Cr�ticos");
+		jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
+		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		jLabel1.setText("Lista de Pontos Cr�ticos");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
+				jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+				javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 54,
+				Short.MAX_VALUE));
 
-        tabela.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        tabela.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tabela);
+		tabela.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		tabela.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
+				{ null, null, null, null }, { null, null, null, null },
+				{ null, null, null, null }, { null, null, null, null } },
+				new String[] { "Title 1", "Title 2", "Title 3", "Title 4" }));
+		jScrollPane1.setViewportView(tabela);
 
-        botaoDetalhar.setText("Detalhar");
-        botaoDetalhar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botãoDetalharActionPerformed(evt);
-            }
-        });
+		botaoDetalhar.setText("Detalhar");
+		botaoDetalhar.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				botaoDetalharActionPerformed(evt);
+			}
+		});
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(botaoDetalhar)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botaoDetalhar)
-                .addContainerGap())
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
+				getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(
+														jScrollPane1,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														676, Short.MAX_VALUE)
+												.addGroup(
+														javax.swing.GroupLayout.Alignment.TRAILING,
+														layout.createSequentialGroup()
+																.addGap(0,
+																		0,
+																		Short.MAX_VALUE)
+																.addComponent(
+																		botaoDetalhar)))
+								.addContainerGap()));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addComponent(jPanel1,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jScrollPane1,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										395, Short.MAX_VALUE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(botaoDetalhar).addContainerGap()));
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void botãoDetalharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botãoDetalharActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botãoDetalharActionPerformed
+	private void botaoDetalharActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_botaoDetalharActionPerformed
+		
+		int linhaSelecionada = tabela.getSelectedRow();
+		
+		if (nivel.equals("metodo")) {
+			
+			if (linhaSelecionada == -1) {
+				Erro("ERRO", "Selecione a linha da tabela a ser detalhada");
+			} else {
+				
+				Vector metodos = objeto.get(linhaSelecionada).caminhoMetodo;
+				TelaMostrarCaminho  telaCaminho = new TelaMostrarCaminho(metodos);
+				telaCaminho.setLocation(500, 200);
+				telaCaminho.setVisible(true);
+				telaCaminho.setResizable(false);
+				System.out.println("Linha " + linhaSelecionada);
+			}
+		} else {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoDetalhar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabela;
-    // End of variables declaration//GEN-END:variables
+			if (linhaSelecionada == -1) {
+				Erro("ERRO", "Selecione a linha da tabela a ser detalhada");
+			} else {
+				
+				String nome = classes.get(linhaSelecionada).getNome();
+				ArrayList<simulacaometodos.ObjetoSim> metodos = dados.map.get(nome);
+				TelaMostrarMetodos  telaMetodos = new TelaMostrarMetodos(metodos,classeComponente);
+				telaMetodos.setLocation(500, 200);
+				telaMetodos.setVisible(true);
+				telaMetodos.setResizable(false);
+				System.out.println("Linha " + linhaSelecionada);
+			}
+		}
+	}// GEN-LAST:event_botaoDetalharActionPerformed
+
+	public void Erro(String titulo, String mensagem) {
+		javax.swing.JOptionPane.showMessageDialog(new javax.swing.JFrame(),
+				mensagem, titulo, javax.swing.JOptionPane.ERROR_MESSAGE);
+	}
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton botaoDetalhar;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JTable tabela;
+	// End of variables declaration//GEN-END:variables
 }

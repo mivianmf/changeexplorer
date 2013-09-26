@@ -158,7 +158,7 @@ class TelaPontosCriticos extends javax.swing.JFrame {
 			int i = Integer.parseInt(quantidade);
 			if (i > 0 && i < tam) {
 				TelaListarPontosCriticos telaListar = new TelaListarPontosCriticos(
-						objeto, classes, i, selecao);
+						objeto, classes, i, selecao,dados);
 				telaListar.setLocation(350, 100);
 				telaListar.setVisible(true);				
 			}
