@@ -86,7 +86,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("MÃ©todos");
+        jLabel1.setText("Métodos");
         jLabel1.setMaximumSize(new java.awt.Dimension(156, 23));
         jLabel1.setMinimumSize(new java.awt.Dimension(156, 23));
         jLabel1.setPreferredSize(new java.awt.Dimension(156, 23));
