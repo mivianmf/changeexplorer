@@ -6,6 +6,7 @@ package changeexplorer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,6 +27,7 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 			tabelaDISCONNECTED;
 	public int[] histoLscc, histoIn, histoOut, histoTubes, histoTendrils,
 	histoDisconnected;
+	public Vector veclscc, vecin, vecout, vectubes, vectendrils, vecdisconnected;
 
 	GerarDados dados;
 
@@ -77,12 +79,14 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		jScrollPane1.setViewportView(tabelaLSCC);
 		jTabbedPane1.addTab("LSCC - " + lscc.size(), jScrollPane1);
 		histoLscc = new int [lscc.get(0).pesoModificacao+1];
+		veclscc = new Vector();
 		
 		for (int i = 0; i < lscc.size(); i++) {
 			Classes c = lscc.get(i);
 			tabelaLSCC.setValueAt(c.nome, i, 0);
 			tabelaLSCC.setValueAt(c.pesoModificacao, i, 1);
 			histoLscc[c.pesoModificacao]++;
+			veclscc.add(c.pesoModificacao);
 		}
 
 	}
@@ -99,11 +103,13 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		pane2.setViewportView(tabelaIN);
 		jTabbedPane1.addTab("IN - " + in.size(), pane2);
 		histoIn = new int [in.get(0).pesoModificacao+1];
-
+		vecin = new Vector();
+		
 		for (int i = 0; i < in.size(); i++) {
 			tabelaIN.setValueAt(in.get(i).nome, i, 0);
 			tabelaIN.setValueAt(in.get(i).pesoModificacao, i, 1);
 			histoIn[in.get(i).pesoModificacao]++;
+			vecin.add(in.get(i).pesoModificacao);
 		}
 	}
 
@@ -120,10 +126,14 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane3.setViewportView(tabelaOUT);
 		jTabbedPane1.addTab("OUT - " + out.size(), pane3);
+		histoOut = new int [out.get(0).pesoModificacao+1];
+		vecout = new Vector<>();
 
 		for (int i = 0; i < out.size(); i++) {
 			tabelaOUT.setValueAt(out.get(i).nome, i, 0);
 			tabelaOUT.setValueAt(out.get(i).pesoModificacao, i, 1);
+			histoOut[out.get(i).pesoModificacao]++;
+			vecout.add(out.get(i).pesoModificacao);
 		}
 	}
 
@@ -139,10 +149,23 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane4.setViewportView(tabelaTUBES);
 		jTabbedPane1.addTab("TUBES - " + tubes.size(), pane4);
+		
+		int tam = 0;
+		
+		if (tubes.size() != 0){
+		tam = tubes.get(0).pesoModificacao;
+		}
+		else{
+			tam = 0;
+		}
+		histoTubes = new int [tam+1];
+		vectubes = new Vector();
 
 		for (int i = 0; i < tubes.size(); i++) {
-			tabelaIN.setValueAt(tubes.get(i).nome, i, 0);
-			tabelaIN.setValueAt(tubes.get(i).pesoModificacao, i, 1);
+			tabelaTUBES.setValueAt(tubes.get(i).nome, i, 0);
+			tabelaTUBES.setValueAt(tubes.get(i).pesoModificacao, i, 1);
+			histoTubes[tubes.get(0).pesoModificacao]++;
+			vectubes.add(tubes.get(i).pesoModificacao);
 		}
 
 	}
@@ -159,10 +182,14 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane5.setViewportView(tabelaTENDRILS);
 		jTabbedPane1.addTab("TENDRILS - " + tendrils.size(), pane5);
-
+		histoTendrils = new int [tendrils.get(0).pesoModificacao+1];
+		vectendrils = new Vector();
+		
 		for (int i = 0; i < tendrils.size(); i++) {
 			tabelaTENDRILS.setValueAt(tendrils.get(i).nome, i, 0);
 			tabelaTENDRILS.setValueAt(tendrils.get(i).pesoModificacao, i, 1);
+			histoTendrils[tendrils.get(0).pesoModificacao]++;
+			vectendrils.add(tendrils.get(0).pesoModificacao);
 		}
 	}
 
@@ -178,11 +205,15 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane3.setViewportView(tabelaDISCONNECTED);
 		jTabbedPane1.addTab("DISCONNECTED - " + disconnected.size(), pane3);
-
+		histoDisconnected = new int [disconnected.get(0).pesoModificacao+1];
+		vecdisconnected = new Vector();		
+		
 		for (int i = 0; i < disconnected.size(); i++) {
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).nome, i, 0);
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).pesoModificacao,
 					i, 1);
+			histoDisconnected[disconnected.get(0).pesoModificacao]++;
+			vecdisconnected.add(disconnected.get(0).pesoModificacao);
 		}
 	}
 
@@ -395,13 +426,16 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
 		
+		Histograma histo = new Histograma(this);
+		
+		/*
 		Grafico grafico = new Grafico(this.histoLscc, "Componente LSCC", 0, 0);
 		Grafico grafico1 = new Grafico(this.histoIn, "Componente IN", 300, 400);
-		//Grafico grafico2 = new Grafico(this.histoOut, "Componente OUT", 400, 0);
+		Grafico grafico2 = new Grafico(this.histoOut, "Componente OUT", 400, 0);
 		//Grafico grafico3 = new Grafico(this.histoTubes, "Componente TUBES", 0,0 );
-		//Grafico grafico4 = new Grafico(this.histoTendrils, "Componente TENDRILS", 0, 0);
-		//Grafico grafico5 = new Grafico(this.histoDisconnected, "Componente DISCONNECTED", 0, 0);
-		
+		Grafico grafico4 = new Grafico(this.histoTendrils, "Componente TENDRILS", 0, 0);
+	    Grafico grafico5 = new Grafico(this.histoDisconnected, "Componente DISCONNECTED", 0, 0);
+		*/
 	}// GEN-LAST:event_jButton1ActionPerformed
 
 	private void botaoDetalharActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_botaoDetalharActionPerformed
