@@ -30,8 +30,8 @@ public class Grafico extends JFrame {
 		ChartPanel panel = new ChartPanel(chart);
 		panel.setPreferredSize(new Dimension(600, 600));
 		setContentPane(panel);
-		//this.pack();
-		//this.setVisible(true);
+		this.pack();
+		this.setVisible(true);
 	}
 
 	private static CategoryDataset createDataset() {
