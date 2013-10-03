@@ -66,7 +66,7 @@ public class Histograma extends JFrame {
 		int height = 300;
 
 		Plot plot = chart.getPlot();
-		plot.setForegroundAlpha(0.8F);
+		plot.setForegroundAlpha(0.6F);
 
 		ChartPanel panel = new ChartPanel(chart);
 		panel.setPreferredSize(new Dimension(400, 300));
