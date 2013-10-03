@@ -6,7 +6,7 @@ package changeexplorer;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import sun.tools.jar.Main;
+
 
 /**
  *
@@ -24,8 +24,11 @@ public class TelaHistograma extends javax.swing.JFrame {
         this.setSize(maxBounds.width, maxBounds.height);
         
         initComponents();
-    }
 
+    
+    
+    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

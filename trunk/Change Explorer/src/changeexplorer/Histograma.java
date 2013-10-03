@@ -40,45 +40,69 @@ public class Histograma extends JFrame {
 
 	public void criarHistograma() {
 
-		HistogramDataset dataset = new HistogramDataset();
-		dataset.setType(HistogramType.FREQUENCY);
-		dataset.addSeries("LSCC", toDouble(dados.veclscc),
+		HistogramDataset lscc = new HistogramDataset();
+		lscc.setType(HistogramType.FREQUENCY);
+		lscc.addSeries("LSCC", toDouble(dados.veclscc),
 				dados.histoLscc.length);
-		dataset.addSeries("IN", toDouble(dados.vecin), dados.histoIn.length);
-		dataset.addSeries("OUT", toDouble(dados.vecout), dados.histoOut.length);
+		
+		HistogramDataset in = new HistogramDataset();
+		in.setType(HistogramType.FREQUENCY);
+		in.addSeries("IN", toDouble(dados.vecin), dados.histoIn.length);
+		
+		HistogramDataset out = new HistogramDataset();
+		out.setType(HistogramType.FREQUENCY);
+		out.addSeries("OUT", toDouble(dados.vecout), dados.histoOut.length);
 		//dataset.addSeries("TUBES", toDouble(dados.vectubes),
 			//	dados.histoTubes.length);
-		dataset.addSeries("TENDRILS", toDouble(dados.vectendrils),
+		HistogramDataset tendrils = new HistogramDataset();
+		tendrils.setType(HistogramType.FREQUENCY);
+		tendrils.addSeries("TENDRILS", toDouble(dados.vectendrils),
 				dados.histoTendrils.length);
-		dataset.addSeries("DISCONNECTED", toDouble(dados.vecdisconnected),
+		HistogramDataset disconnected = new HistogramDataset();
+		disconnected.setType(HistogramType.FREQUENCY);
+		disconnected.addSeries("DISCONNECTED", toDouble(dados.vecdisconnected),
 				dados.histoDisconnected.length);
 
 		String plotTitle = "Distribuição de Pesos";
 		String xaxis = "Peso Modificação";
 		String yaxis = "Frequência";
+		
 		PlotOrientation orientation = PlotOrientation.VERTICAL;
 		boolean show = true;
 		boolean toolTips = false;
 		boolean urls = false;
-		JFreeChart chart = ChartFactory.createHistogram(plotTitle, xaxis,
-				yaxis, dataset, orientation, show, toolTips, urls);
-		int width = 500;
-		int height = 300;
+		
+		JFreeChart chartlscc = ChartFactory.createHistogram(plotTitle, xaxis,
+				yaxis, lscc, orientation, show, toolTips, urls);
+		
+		JFreeChart chartin = ChartFactory.createHistogram(plotTitle, xaxis,
+				yaxis, in, orientation, show, toolTips, urls);
+		
+		JFreeChart chartout = ChartFactory.createHistogram(plotTitle, xaxis,
+				yaxis, out, orientation, show, toolTips, urls);
 
-		Plot plot = chart.getPlot();
-		plot.setForegroundAlpha(0.6F);
-
-		ChartPanel panel = new ChartPanel(chart);
-		panel.setPreferredSize(new Dimension(400, 300));
-		this.setContentPane(panel);
-		this.pack();
-		this.setVisible(true);
-
-		try {
-			ChartUtilities.saveChartAsPNG(new File("./Imagens/histogram.PNG"),
-					chart, width, height);
-		} catch (IOException e) {
-		}
+//		JFreeChart chartubes = ChartFactory.createHistogram(plotTitle, xaxis,
+	//			yaxis, tubes, orientation, show, toolTips, urls);
+		
+		JFreeChart charttendrils = ChartFactory.createHistogram(plotTitle, xaxis,
+				yaxis, tendrils, orientation, show, toolTips, urls);
+		
+		JFreeChart chartdisconnected = ChartFactory.createHistogram(plotTitle, xaxis,
+				yaxis, disconnected, orientation, show, toolTips, urls);
+		
+		  try {  
+			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/lscc.jpg"), chartlscc, 700, 600);
+			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/in.jpg"), chartin, 700, 600);
+			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/out.jpg"), chartout, 700, 600);
+			    //ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/tubes.jpg"), chartubes, 700, 600);
+			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/tendrils.jpg"), charttendrils, 700, 600);
+			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/disconnected.jpg"), chartdisconnected, 700, 600);
+			} catch (IOException e) {  
+			    // TODO Auto-generated catch block  
+			    e.printStackTrace();  
+			}  
+			      
+		
 	}
 
 }
