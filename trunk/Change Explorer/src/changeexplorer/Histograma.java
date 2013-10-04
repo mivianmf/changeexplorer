@@ -25,10 +25,6 @@ public class Histograma extends JFrame {
 
 		this.dados = dados;
 		criarHistograma();
-		TelaHistograma tela = new TelaHistograma();
-		tela.setLocation(100, 200);
-		tela.setVisible(true);
-		tela.setResizable(false);
 		
 	}
 

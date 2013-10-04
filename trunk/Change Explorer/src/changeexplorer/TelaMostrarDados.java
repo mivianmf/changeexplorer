@@ -16,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 
@@ -25,15 +28,16 @@ import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
  * 
  * @author Mivian
  */
-public class TelaMostrarDados extends javax.swing.JFrame {
+public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener {
 
 	JTable tabelaLSCC, tabelaIN, tabelaOUT, tabelaTENDRILS, tabelaTUBES,
-			tabelaDISCONNECTED;
+			tabelaDISCONNECTED, tabelaAux;
 	public int[] histoLscc, histoIn, histoOut, histoTubes, histoTendrils,
-	histoDisconnected;
-	public Vector veclscc, vecin, vecout, vectubes, vectendrils, vecdisconnected;
-
-	GerarDados dados;
+			histoDisconnected;
+	public Vector veclscc, vecin, vecout, vectubes, vectendrils,
+			vecdisconnected, posicoes;
+	private int f3, contP;
+	private GerarDados dados;
 
 	/**
 	 * Creates new form TelaMostrarDados
@@ -43,7 +47,6 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		this.dados = dados;
 
 		initComponents();
-	
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -72,20 +75,20 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	public void gerarLSCC() {
 
 		ArrayList<Classes> lscc = dados.getLscc();
-		
+
 		int x = lscc.get(0).pesoModificacao;
 		System.out.println("$" + x);
 		// vetorLscc = new int [x+1];
 
 		tabelaLSCC.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[lscc.size()][2], new String[] { "Classe",
-						"Impacto" }));
+				new Object[lscc.size()][2],
+				new String[] { "Classe", "Impacto" }));
 
 		jScrollPane1.setViewportView(tabelaLSCC);
 		jTabbedPane1.addTab("LSCC - " + lscc.size(), jScrollPane1);
-		histoLscc = new int [lscc.get(0).pesoModificacao+1];
+		histoLscc = new int[lscc.get(0).pesoModificacao + 1];
 		veclscc = new Vector();
-		
+
 		for (int i = 0; i < lscc.size(); i++) {
 			Classes c = lscc.get(i);
 			tabelaLSCC.setValueAt(c.nome, i, 0);
@@ -107,9 +110,9 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane2.setViewportView(tabelaIN);
 		jTabbedPane1.addTab("IN - " + in.size(), pane2);
-		histoIn = new int [in.get(0).pesoModificacao+1];
+		histoIn = new int[in.get(0).pesoModificacao + 1];
 		vecin = new Vector();
-		
+
 		for (int i = 0; i < in.size(); i++) {
 			tabelaIN.setValueAt(in.get(i).nome, i, 0);
 			tabelaIN.setValueAt(in.get(i).pesoModificacao, i, 1);
@@ -131,7 +134,7 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane3.setViewportView(tabelaOUT);
 		jTabbedPane1.addTab("OUT - " + out.size(), pane3);
-		histoOut = new int [out.get(0).pesoModificacao+1];
+		histoOut = new int[out.get(0).pesoModificacao + 1];
 		vecout = new Vector<>();
 
 		for (int i = 0; i < out.size(); i++) {
@@ -154,16 +157,15 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane4.setViewportView(tabelaTUBES);
 		jTabbedPane1.addTab("TUBES - " + tubes.size(), pane4);
-		
+
 		int tam = 0;
-		
-		if (tubes.size() != 0){
-		tam = tubes.get(0).pesoModificacao;
-		}
-		else{
+
+		if (tubes.size() != 0) {
+			tam = tubes.get(0).pesoModificacao;
+		} else {
 			tam = 0;
 		}
-		histoTubes = new int [tam+1];
+		histoTubes = new int[tam + 1];
 		vectubes = new Vector();
 
 		for (int i = 0; i < tubes.size(); i++) {
@@ -187,9 +189,9 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane5.setViewportView(tabelaTENDRILS);
 		jTabbedPane1.addTab("TENDRILS - " + tendrils.size(), pane5);
-		histoTendrils = new int [tendrils.get(0).pesoModificacao+1];
+		histoTendrils = new int[tendrils.get(0).pesoModificacao + 1];
 		vectendrils = new Vector();
-		
+
 		for (int i = 0; i < tendrils.size(); i++) {
 			tabelaTENDRILS.setValueAt(tendrils.get(i).nome, i, 0);
 			tabelaTENDRILS.setValueAt(tendrils.get(i).pesoModificacao, i, 1);
@@ -210,9 +212,9 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 
 		pane3.setViewportView(tabelaDISCONNECTED);
 		jTabbedPane1.addTab("DISCONNECTED - " + disconnected.size(), pane3);
-		histoDisconnected = new int [disconnected.get(0).pesoModificacao+1];
-		vecdisconnected = new Vector();		
-		
+		histoDisconnected = new int[disconnected.get(0).pesoModificacao + 1];
+		vecdisconnected = new Vector();
+
 		for (int i = 0; i < disconnected.size(); i++) {
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).nome, i, 0);
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).pesoModificacao,
@@ -225,280 +227,347 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed"
 	// <editor-fold defaultstate="collapsed"
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	// <editor-fold defaultstate="collapsed"
+	// desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        botaoDetalhar = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+		jButton1 = new javax.swing.JButton();
+		jButton2 = new javax.swing.JButton();
+		jPanel2 = new javax.swing.JPanel();
+		jLabel1 = new javax.swing.JLabel();
+		jTabbedPane1 = new javax.swing.JTabbedPane();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		jTable1 = new javax.swing.JTable();
+		botaoDetalhar = new javax.swing.JButton();
+		jPanel1 = new javax.swing.JPanel();
+		jButton3 = new javax.swing.JButton();
+		jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(204, 204, 204));
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setBackground(new java.awt.Color(204, 204, 204));
 
-        jButton1.setText("Gerar Gr√°ficos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+		jButton1.setText("Gerar Gr√°ficos");
+		jButton1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton1ActionPerformed(evt);
+			}
+		});
 
-        jButton2.setText("Exibir Pontos Cr√≠ticos");
-        jButton2.setMaximumSize(new java.awt.Dimension(101, 23));
-        jButton2.setMinimumSize(new java.awt.Dimension(101, 23));
-        jButton2.setPreferredSize(new java.awt.Dimension(101, 23));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+		jButton2.setText("Exibir Pontos Cr√≠ticos");
+		jButton2.setMaximumSize(new java.awt.Dimension(101, 23));
+		jButton2.setMinimumSize(new java.awt.Dimension(101, 23));
+		jButton2.setPreferredSize(new java.awt.Dimension(101, 23));
+		jButton2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton2ActionPerformed(evt);
+			}
+		});
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+		jPanel2.setBorder(javax.swing.BorderFactory
+				.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Resultados Obtidos");
+		jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
+		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		jLabel1.setText("Resultados Obtidos");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
+				jPanel2);
+		jPanel2.setLayout(jPanel2Layout);
+		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+				javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+				jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 54,
+				Short.MAX_VALUE));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+		jTable1.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[][] { { null, null, null, null },
+						{ null, null, null, null }, { null, null, null, null },
+						{ null, null, null, null } }, new String[] { "Title 1",
+						"Title 2", "Title 3", "Title 4" }));
+		jScrollPane1.setViewportView(jTable1);
 
-        jTabbedPane1.addTab("tab1", jScrollPane1);
+		jTabbedPane1.addTab("tab1", jScrollPane1);
 
-        botaoDetalhar.setText("Detalhar");
-        botaoDetalhar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoDetalharActionPerformed(evt);
-            }
-        });
+		botaoDetalhar.setText("Detalhar");
+		botaoDetalhar.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				botaoDetalharActionPerformed(evt);
+			}
+		});
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Localizar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
+		jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+				"Localizar",
+				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION, null,
+				new java.awt.Color(0, 0, 0)));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/changeexplorer/botaoLupa.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+		jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+				"/changeexplorer/botaoLupa.png"))); // NOI18N
+		jButton3.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton3ActionPerformed(evt);
+			}
+		});
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jTextField1)
-        );
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
+				jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout
+				.setHorizontalGroup(jPanel1Layout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
+								jPanel1Layout
+										.createSequentialGroup()
+										.addGap(1, 1, 1)
+										.addComponent(
+												jTextField1,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												253, Short.MAX_VALUE)
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addComponent(
+												jButton3,
+												javax.swing.GroupLayout.PREFERRED_SIZE,
+												25,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addGap(8, 8, 8)));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE,
+						25, javax.swing.GroupLayout.PREFERRED_SIZE)
+				.addComponent(jTextField1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(botaoDetalhar, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoDetalhar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
+				getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(
+														jTabbedPane1,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														562, Short.MAX_VALUE)
+												.addComponent(
+														jButton1,
+														javax.swing.GroupLayout.Alignment.TRAILING,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														Short.MAX_VALUE)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		botaoDetalhar,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		237,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGap(18, 18,
+																		18)
+																.addComponent(
+																		jButton2,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		Short.MAX_VALUE))
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		jPanel1,
+																		javax.swing.GroupLayout.PREFERRED_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGap(0,
+																		0,
+																		Short.MAX_VALUE)))
+								.addContainerGap()));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addComponent(jPanel2,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jPanel1,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jTabbedPane1,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										472,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(
+												javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(
+														botaoDetalhar,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														30,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(
+														jButton2,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
+														30,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(
+										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jButton1,
+										javax.swing.GroupLayout.PREFERRED_SIZE,
+										30,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap(
+										javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        String busca = this.jTextField1.getText();
-        System.out.println("%%%%%%%"+busca);
-        
-        if (busca == null || busca.isEmpty()){
-        	System.out.println("DEU CHABU");
-        }
-        else{
-        	if(busca.equalsIgnoreCase("LSCC")|| busca.equalsIgnoreCase("IN")||
-        			busca.equalsIgnoreCase("OUT") || busca.equalsIgnoreCase("TUBES")||
-        					busca.equalsIgnoreCase("TENDRILS")||busca.equalsIgnoreCase("DISCONNECTED")){
-        		System.out.println("FALOU QUE EH COMPONENTE");
-        	}
-        	else{
-        		
-        		System.out.println("ENTREI ELSE");
-        		HashMap <String, String> mapC = dados.classeComponente;
-        		
-        		JTable tabAux = new JTable();
-        		ArrayList<Classes> classes = new ArrayList<Classes>();
+	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton3ActionPerformed
 
-        		if (tabelaLSCC.isShowing()) {
-        			tabAux = tabelaLSCC;
-        			classes = dados.lscc;
-        		} else {
-        			if (tabelaIN.isShowing()) {
-        				tabAux = tabelaIN;
-        				classes = dados.in;
-        			} else {
-        				if (tabelaOUT.isShowing()) {
-        					tabAux = tabelaOUT;
-        					classes = dados.out;
-        				} else {
-        					if (tabelaTUBES.isShowing()) {
-        						tabAux = tabelaTUBES;
-        						classes = dados.tubes;
-        					} else {
-        						if (tabelaTENDRILS.isShowing()) {
-        							tabAux = tabelaTENDRILS;
-        							classes = dados.tendrils;
-        						} else {
-        							if (tabelaDISCONNECTED.isShowing()) {
-        								tabAux = tabelaDISCONNECTED;
-        								classes = dados.disconnected;
-        							}
-        						}
-        					}
-        				}
-        			}
-        		}
+		String busca = this.jTextField1.getText();
 
-        		
-        		
-        		String aux, aux1;
-        		String componente;
-        		//Erro("AVISO", "Pressione F5 para mostrar os resultados");
-        		
-        		for (int i = 0; i < classes.size(); i++) {
-					aux = classes.get(i).nome;
-        			aux1 = classes.get(i).nome.toUpperCase();
-    
-        			if(aux1.contains(busca.toUpperCase())){
-        				
-        				componente = mapC.get(aux);
-        				tabAux.setRowSelectionInterval(i, i);
-        				System.out.println("linha "+i);
-        				this.addKeyListener(new KeyAdapter() {  
-        				    public void keyPressed(java.awt.event.KeyEvent e) {  
-        				    	while(true) {  
-        				    		if(e.getKeyCode() == java.awt.event.KeyEvent.VK_F5){
-        				    			break;
-        				    		}else{
-        				    			System.out.println("PEGANDO NADA");
-        				    		}
-        				        }  
-        				                      
-        				    };  
-        				});  
-        				
-        			
-        			}
+		if (busca == null || busca.isEmpty()) {
+			System.out.println("DEU CHABU");
+		} else {
+			HashMap<String, String> mapC = dados.classeComponente;
+
+			
+			ArrayList<Classes> classes = new ArrayList<Classes>();
+
+			if (tabelaLSCC.isShowing()) {
+				this.tabelaAux = tabelaLSCC;
+				classes = dados.lscc;
+			} else {
+				if (tabelaIN.isShowing()) {
+					this.tabelaAux = tabelaIN;
+					classes = dados.in;
+				} else {
+					if (tabelaOUT.isShowing()) {
+						this.tabelaAux = tabelaOUT;
+						classes = dados.out;
+					} else {
+						if (tabelaTUBES.isShowing()) {
+							this.tabelaAux = tabelaTUBES;
+							classes = dados.tubes;
+						} else {
+							if (tabelaTENDRILS.isShowing()) {
+								this.tabelaAux = tabelaTENDRILS;
+								classes = dados.tendrils;
+							} else {
+								if (tabelaDISCONNECTED.isShowing()) {
+									this.tabelaAux = tabelaDISCONNECTED;
+									classes = dados.disconnected;
+								}
+							}
+						}
+					}
 				}
-        	}   	
-        }
-        
-        
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+			}
 
-	
-    private void mostrarTabela(int mostrarLinha, String nomeComponente){
-   	 
-    	System.out.println("LINHA = "+mostrarLinha+" COMPONENTE = "+nomeComponente);
-    	 	
-    	
-    	switch (nomeComponente) {
+			String aux, aux1;
+			String componente;
+			posicoes = new Vector();
+
+			for (int i = 0; i < classes.size(); i++) {
+				aux = classes.get(i).nome;
+				aux1 = classes.get(i).nome.toUpperCase();
+
+				if (aux1.contains(busca.toUpperCase())) {
+					componente = mapC.get(aux);
+					posicoes.add(i);
+				}
+			}
+
+			mostrarResultados();
+		}
+	}// GEN-LAST:event_jButton3ActionPerformed
+
+	private void mostrarResultados() {
+
+		this.contP = 0; 
+			int tam = posicoes.size();
 		
-    	case "LSCC":
+		if (posicoes.isEmpty()) {
+			Aviso("", "Termo n„o encontrado nesta tabela");
+		} else {
+			int p = (int) posicoes.get(contP);
+			this.tabelaAux.setRowSelectionInterval(p, p);
+			this.tabelaAux.addKeyListener(this);
+			this.jButton3.addKeyListener(this);
+			
+			ListSelectionModel selectionModel = tabelaAux.getSelectionModel();  
+			selectionModel.addListSelectionListener(new ListSelectionListener() {  
+			    public void valueChanged(ListSelectionEvent event) {  
+			        tabelaAux.scrollRectToVisible(tabelaAux.getCellRect(  
+			                tabelaAux.getSelectedRow(), 0, true));  
+			    } /* Finaliza o mÈtodo valueChanged. */  
+			});
+			
+			contP++;
+			//Aviso("", "Pressione F3 para mais resultados");
+		}
+
+	}
+
+	private void mostrarTabela(int mostrarLinha, String nomeComponente) {
+
+		System.out.println("LINHA = " + mostrarLinha + " COMPONENTE = "
+				+ nomeComponente);
+
+		switch (nomeComponente) {
+
+		case "LSCC":
 			tabelaLSCC.show();
 			tabelaLSCC.setRowSelectionInterval(mostrarLinha, mostrarLinha);
 			break;
 
-    	case "IN":
-    		tabelaIN.show();
+		case "IN":
+			tabelaIN.show();
 			tabelaIN.setRowSelectionInterval(mostrarLinha, mostrarLinha);
-    		break;
-    	
-    	case "OUT":
-    		tabelaOUT.show();
+			break;
+
+		case "OUT":
+			tabelaOUT.show();
 			tabelaOUT.setRowSelectionInterval(mostrarLinha, mostrarLinha);
-    		break;
-    		
-    	case "TUBES":
-    		tabelaTUBES.show();
+			break;
+
+		case "TUBES":
+			tabelaTUBES.show();
 			tabelaTUBES.setRowSelectionInterval(mostrarLinha, mostrarLinha);
-    		break;
-    		
-    	case "TENDRILS":
-    		tabelaTENDRILS.show();
+			break;
+
+		case "TENDRILS":
+			tabelaTENDRILS.show();
 			tabelaTENDRILS.setRowSelectionInterval(mostrarLinha, mostrarLinha);
-    		break;
-    		
-    	case "DISCONNECTED":
-    		tabelaDISCONNECTED.show();
-			tabelaDISCONNECTED.setRowSelectionInterval(mostrarLinha, mostrarLinha);
-    		break;
-			
-			
+			break;
+
+		case "DISCONNECTED":
+			tabelaDISCONNECTED.show();
+			tabelaDISCONNECTED.setRowSelectionInterval(mostrarLinha,
+					mostrarLinha);
+			break;
+
 		default:
 			break;
 		}
-    }   
-       
+	}
 
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
 		TelaPontosCriticos telaCritico = new TelaPontosCriticos(dados);
@@ -508,17 +577,23 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButton2ActionPerformed
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-		
+
 		Histograma histo = new Histograma(this);
-		
+		TelaHistograma tela = new TelaHistograma();
+		tela.setLocation(100, 200);
+		tela.setVisible(true);
+		tela.setResizable(false);
+
 		/*
-		Grafico grafico = new Grafico(this.histoLscc, "Componente LSCC", 0, 0);
-		Grafico grafico1 = new Grafico(this.histoIn, "Componente IN", 300, 400);
-		Grafico grafico2 = new Grafico(this.histoOut, "Componente OUT", 400, 0);
-		//Grafico grafico3 = new Grafico(this.histoTubes, "Componente TUBES", 0,0 );
-		Grafico grafico4 = new Grafico(this.histoTendrils, "Componente TENDRILS", 0, 0);
-	    Grafico grafico5 = new Grafico(this.histoDisconnected, "Componente DISCONNECTED", 0, 0);
-		*/
+		 * Grafico grafico = new Grafico(this.histoLscc, "Componente LSCC", 0,
+		 * 0); Grafico grafico1 = new Grafico(this.histoIn, "Componente IN",
+		 * 300, 400); Grafico grafico2 = new Grafico(this.histoOut,
+		 * "Componente OUT", 400, 0); //Grafico grafico3 = new
+		 * Grafico(this.histoTubes, "Componente TUBES", 0,0 ); Grafico grafico4
+		 * = new Grafico(this.histoTendrils, "Componente TENDRILS", 0, 0);
+		 * Grafico grafico5 = new Grafico(this.histoDisconnected,
+		 * "Componente DISCONNECTED", 0, 0);
+		 */
 	}// GEN-LAST:event_jButton1ActionPerformed
 
 	private void botaoDetalharActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_botaoDetalharActionPerformed
@@ -561,10 +636,11 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 		if (linhaSelecionada == -1) {
 			Erro("ERRO", "Selecione a linha da tabela a ser detalhada");
 		} else {
-			
+
 			String nome = classes.get(linhaSelecionada).getNome();
 			ArrayList<simulacaometodos.ObjetoSim> metodos = dados.map.get(nome);
-			TelaMostrarMetodos  telaMetodos = new TelaMostrarMetodos(metodos,dados.classeComponente);
+			TelaMostrarMetodos telaMetodos = new TelaMostrarMetodos(metodos,
+					dados.classeComponente);
 			telaMetodos.setLocation(500, 200);
 			telaMetodos.setVisible(true);
 			telaMetodos.setResizable(false);
@@ -576,6 +652,11 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	public void Erro(String titulo, String mensagem) {
 		javax.swing.JOptionPane.showMessageDialog(new javax.swing.JFrame(),
 				mensagem, titulo, javax.swing.JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void Aviso(String titulo, String mensagem) {
+		javax.swing.JOptionPane.showMessageDialog(new javax.swing.JFrame(),
+				mensagem, titulo, javax.swing.JOptionPane.WARNING_MESSAGE);
 	}
 
 	/*
@@ -595,17 +676,57 @@ public class TelaMostrarDados extends javax.swing.JFrame {
 	 * arv.expandPath(parent); } else { arv.collapsePath(parent); } }
 	 */
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoDetalhar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton botaoDetalhar;
+	private javax.swing.JButton jButton1;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JButton jButton3;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JTabbedPane jTabbedPane1;
+	private javax.swing.JTable jTable1;
+	private javax.swing.JTextField jTextField1;
+
+	// End of variables declaration//GEN-END:variables
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+		if(e.getKeyCode() == KeyEvent.VK_F3){
+			System.out.println("apertei f3");
+			
+			if (contP >= posicoes.size()){
+				Aviso("","Fim da pesquisa");
+			}
+			else{
+				int p = (int)posicoes.get(contP);
+				System.out.println("LINHA = "+p);
+				tabelaAux.setRowSelectionInterval(p, p);
+				contP++;
+				ListSelectionModel selectionModel = tabelaAux.getSelectionModel();  
+				selectionModel.addListSelectionListener(new ListSelectionListener() {  
+				    public void valueChanged(ListSelectionEvent event) {  
+				        tabelaAux.scrollRectToVisible(tabelaAux.getCellRect(  
+				                tabelaAux.getSelectedRow(), 0, true));  
+				    } /* Finaliza o mÈtodo valueChanged. */  
+				});
+			}
+			
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+
+	}
+
 }

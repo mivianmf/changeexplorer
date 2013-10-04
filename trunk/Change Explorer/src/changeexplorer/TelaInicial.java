@@ -242,7 +242,7 @@ class TelaInicial extends javax.swing.JFrame {
         
         TelaMostrarDados telaDados = new TelaMostrarDados(gerarDados);
         telaDados.setVisible(true);
-        telaDados.setLocation(350,100);
+        telaDados.setLocation(350,5);
         telaDados.setResizable(false);
         
         

@@ -6,6 +6,8 @@ package changeexplorer;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -33,9 +35,11 @@ public class GerarImagem extends JPanel {
         BufferedImage img = null;
         try {
                        
-        	img = ImageIO.read(getClass().getResource("imagens/lscc.png"));
+        	img = ImageIO.read(new File("src\\imagens\\lscc.png"));
                        
         } catch (Exception e) {
+        	
+        	System.out.println(System.getProperty("user.dir"));
             System.out.println("BackGround nao encontrado");
         }
        g.drawImage(img, 0, 0, null);
