@@ -25,6 +25,11 @@ public class Histograma extends JFrame {
 
 		this.dados = dados;
 		criarHistograma();
+		TelaHistograma tela = new TelaHistograma();
+		tela.setLocation(100, 200);
+		tela.setVisible(true);
+		tela.setResizable(false);
+		
 	}
 
 	public double[] toDouble(Vector x) {
@@ -63,9 +68,9 @@ public class Histograma extends JFrame {
 		disconnected.addSeries("DISCONNECTED", toDouble(dados.vecdisconnected),
 				dados.histoDisconnected.length);
 
-		String plotTitle = "Distribuição de Pesos";
-		String xaxis = "Peso Modificação";
-		String yaxis = "Frequência";
+		String plotTitle = "Distribuiï¿½ï¿½o de Pesos";
+		String xaxis = "Peso Modificaï¿½ï¿½o";
+		String yaxis = "Frequï¿½ncia";
 		
 		PlotOrientation orientation = PlotOrientation.VERTICAL;
 		boolean show = true;
@@ -91,13 +96,14 @@ public class Histograma extends JFrame {
 				yaxis, disconnected, orientation, show, toolTips, urls);
 		
 		  try {  
-			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/lscc.jpg"), chartlscc, 700, 600);
-			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/in.jpg"), chartin, 700, 600);
-			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/out.jpg"), chartout, 700, 600);
-			    //ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/tubes.jpg"), chartubes, 700, 600);
-			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/tendrils.jpg"), charttendrils, 700, 600);
-			    ChartUtilities.saveChartAsJPEG(new java.io.File("./Imagens/disconnected.jpg"), chartdisconnected, 700, 600);
-			} catch (IOException e) {  
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/lscc.png"), chartlscc, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/in.png"), chartin, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/out.png"), chartout, 700, 600);
+			    //ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/tubes.png"), chartubes, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/tendrils.png"), charttendrils, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/disconnected.png"), chartdisconnected, 700, 600);
+			
+		  } catch (IOException e) {  
 			    // TODO Auto-generated catch block  
 			    e.printStackTrace();  
 			}  
