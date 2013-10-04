@@ -64,9 +64,9 @@ public class Histograma extends JFrame {
 		disconnected.addSeries("DISCONNECTED", toDouble(dados.vecdisconnected),
 				dados.histoDisconnected.length);
 
-		String plotTitle = "Distribuiï¿½ï¿½o de Pesos";
-		String xaxis = "Peso Modificaï¿½ï¿½o";
-		String yaxis = "Frequï¿½ncia";
+		String plotTitle = "Distribuição de Pesos";
+		String xaxis = "Peso Modificação";
+		String yaxis = "Frequêcia";
 		
 		PlotOrientation orientation = PlotOrientation.VERTICAL;
 		boolean show = true;

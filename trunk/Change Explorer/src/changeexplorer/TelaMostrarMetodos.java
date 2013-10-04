@@ -85,14 +85,14 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
         nomClass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Change Explorer");
         setBackground(new java.awt.Color(204, 204, 204));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Métodos");
+        jLabel1.setText("MÃ©todos");
         jLabel1.setMaximumSize(new java.awt.Dimension(156, 23));
         jLabel1.setMinimumSize(new java.awt.Dimension(156, 23));
         jLabel1.setPreferredSize(new java.awt.Dimension(156, 23));
@@ -122,6 +122,9 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tabela);
 
         jButton1.setText("Detalhar");
+        jButton1.setMaximumSize(new java.awt.Dimension(73, 30));
+        jButton1.setMinimumSize(new java.awt.Dimension(73, 30));
+        jButton1.setPreferredSize(new java.awt.Dimension(73, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -170,7 +173,7 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(MostrarNomeClasse, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -182,8 +185,8 @@ public class TelaMostrarMetodos extends javax.swing.JFrame {
                         .addGap(12, 12, 12)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
         );
 
         pack();

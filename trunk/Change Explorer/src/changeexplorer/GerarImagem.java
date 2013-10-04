@@ -30,11 +30,13 @@ public class GerarImagem extends JPanel {
             //se você pegar uma imagem dentro do mesmo jar/projeto  
            imagem = ImageIO.read(new File("src\\imagens\\"+nomeImagem));                   
            
-           retangulo = new Rectangle(0,0,130,130);                                   
+           //retangulo = new Rectangle(0,0,130,130);                                   
              
        } catch (IOException ex) {  
+    	   
     	   System.out.println("NAO ACHEI CAMINHO!!");
-           ex.printStackTrace(System.err);  
+    	   System.out.println(System.getProperty("user.dir"));
+    	   ex.printStackTrace(System.err);  
        }  
     }
 
