@@ -83,6 +83,7 @@ public class TelaMostrarCaminho extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Change Explorer");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
