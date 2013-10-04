@@ -58,11 +58,10 @@ class TelaInicial extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
+        
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Analisar Propagação");
+        jLabel1.setText("Analisar Propagaï¿½ï¿½o");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,6 +227,12 @@ class TelaInicial extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
                
+    	this.caminhoArqSim = "C:/Users/Mivian/Documents/Arquivos .sim/logisim.sim";
+    	this.caminhoArqClu = "C:/Users/Mivian/Documents/Arquivos .clu/logisim.clu";
+    	this.caminhoArqNet = "C:/Users/Mivian/Documents/Arquivos .net/logisim.net";
+    	
+    	
+    	
         if (this.caminhoArqSim.contains(".sim")){
         TratarArquivoSim tratarSim = new TratarArquivoSim(caminhoArqSim);
         TratarArquivoNet tratarNet = new TratarArquivoNet(caminhoArqNet);
