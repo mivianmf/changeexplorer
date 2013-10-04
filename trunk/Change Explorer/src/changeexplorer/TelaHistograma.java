@@ -35,7 +35,6 @@ public TelaHistograma() {
         
     }
  
-    
  
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,12 +45,12 @@ public TelaHistograma() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        jPanel1 = new GerarImagem("lscc.png");
+        jPanel2 = new GerarImagem("in.png");
+        jPanel4 = new GerarImagem("out.png");
+        jPanel5 = new GerarImagem("lscc.png");
+        jPanel6 = new GerarImagem("tendrils.png");
+        jPanel7 = new GerarImagem("disconnected.png");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Change Explorer");
@@ -237,7 +236,7 @@ public TelaHistograma() {
 								
 								if (e.getSource() == this.jPanel7){
 									JFrame aux = new JFrame();
-									aux.setContentPane(new GerarImagem("diconnected.png"));
+									aux.setContentPane(new GerarImagem("disconnected.png"));
 									aux.setSize(800, 600);
 									aux.setVisible(true);
 								}
