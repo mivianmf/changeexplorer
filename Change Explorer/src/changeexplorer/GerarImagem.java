@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class GerarImagem extends javax.swing.JPanel {
@@ -14,8 +15,7 @@ public class GerarImagem extends javax.swing.JPanel {
 
 	public GerarImagem(String nomeImagem) {
 		try {
-			imagem = ImageIO.read(getClass().getResourceAsStream(
-					"src\\imagens" + nomeImagem));
+			imagem = ImageIO.read(new File("src\\imagens\\" + nomeImagem));
 
 		} catch (IOException ex) {
 			ex.printStackTrace(System.err);
