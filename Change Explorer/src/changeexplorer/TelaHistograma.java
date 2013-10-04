@@ -43,12 +43,16 @@ public TelaHistograma() {
     private void initComponents() {
 
         jInternalFrame1 = new javax.swing.JInternalFrame("LSCC", true, true, true, true);
-        jInternalFrame1.setContentPane(new GerarImagem());
-        jInternalFrame2 = new javax.swing.JInternalFrame();
-        jInternalFrame3 = new javax.swing.JInternalFrame();
-        jInternalFrame4 = new javax.swing.JInternalFrame();
-        jInternalFrame5 = new javax.swing.JInternalFrame();
-
+        jInternalFrame1.setContentPane(new GerarImagem("lscc.png"));
+        jInternalFrame2 = new javax.swing.JInternalFrame("IN", true, true, true, true);
+        jInternalFrame2.setContentPane(new GerarImagem("in.png"));
+        jInternalFrame3 = new javax.swing.JInternalFrame("OUT", true, true, true, true);
+        jInternalFrame3.setContentPane(new GerarImagem("out.png"));
+        jInternalFrame4 = new javax.swing.JInternalFrame("TRENDRILS", true, true, true, true);
+        jInternalFrame4.setContentPane(new GerarImagem("tendrils.png"));
+        jInternalFrame5 = new javax.swing.JInternalFrame("DISCONNECTED", true, true, true, true);
+        jInternalFrame5.setContentPane(new GerarImagem("disconnected.png"));
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
