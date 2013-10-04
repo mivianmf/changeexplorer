@@ -5,8 +5,13 @@
 package changeexplorer;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -17,34 +22,31 @@ import javax.swing.JPanel;
  */
 public class GerarImagem extends JPanel {
 
-    public GerarImagem() {
-        // alterando algumas propriedades do objeto
-        this.setFocusable(true); // pode assumir foco
-        //this.setBackground(Color.WHITE); // alterando a cor do fundo
-
+	BufferedImage imagem;  
+    Rectangle2D retangulo;
+	
+    public GerarImagem(String nomeImagem) {
+    	try {  
+            //se voc� pegar uma imagem dentro do mesmo jar/projeto  
+           imagem = ImageIO.read(new File("src\\imagens\\"+nomeImagem));                   
+           
+           retangulo = new Rectangle(0,0,130,130);                                   
+             
+       } catch (IOException ex) {  
+    	   System.out.println("NAO ACHEI CAMINHO!!");
+           ex.printStackTrace(System.err);  
+       }  
     }
 
-    // Este método é invocado para desenhar o Painel
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        desenharImagem(g);
-    }
-
-    private void desenharImagem(Graphics g) {
-        BufferedImage img = null;
-        try {
-                       
-        	img = ImageIO.read(new File("src\\imagens\\lscc.png"));
-                       
-        } catch (Exception e) {
-        	
-        	System.out.println(System.getProperty("user.dir"));
-            System.out.println("BackGround nao encontrado");
-        }
-       g.drawImage(img, 0, 0, null);
-       // Graphics2D g2 = (Graphics2D) this.getGraphics();
-
+    public void paintComponent(Graphics g){    
+        
+    	retangulo = new Rectangle(0,0,this.getWidth(),this.getHeight());  
+          
+          
+        TexturePaint p = new TexturePaint(imagem,retangulo);  
+        Graphics2D g2 = (Graphics2D) g;  
+        g2.setPaint(p);  
+        g2.fillRect(0,0,this.getWidth(),this.getHeight());  
 
     }
 }
