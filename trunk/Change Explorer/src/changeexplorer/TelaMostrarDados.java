@@ -307,7 +307,7 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Localizar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/changeexplorer/botaoLupa.png"))); // NOI18N
+        //jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/changeexplorer/botaoLupa.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -376,7 +376,7 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		String busca = this.jTextField1.getText();
 
 		if (busca == null || busca.isEmpty()) {
-			System.out.println("DEU CHABU");
+			Erro("Erro","Digite a palavra chave");
 		} else {
 			HashMap<String, String> mapC = dados.classeComponente;
 
