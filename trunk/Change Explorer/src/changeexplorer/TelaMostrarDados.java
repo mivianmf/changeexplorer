@@ -434,7 +434,7 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 			int tam = posicoes.size();
 		
 		if (posicoes.isEmpty()) {
-			Aviso("", "Termo nï¿½o encontrado nesta tabela");
+			Aviso("", "Termo não encontrado nesta tabela");
 		} else {
 			int p = (int) posicoes.get(contP);
 			this.tabelaAux.setRowSelectionInterval(p, p);
