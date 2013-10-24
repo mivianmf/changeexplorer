@@ -6,6 +6,8 @@ package changeexplorer;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -15,6 +17,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import simulacaometodos.ObjetoSim;
@@ -33,6 +39,8 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame implements KeyL
 	HashMap<String, String> classeComponente;
 	GerarDados dados;
 	Vector posicoes;
+	private HSSFWorkbook workbook = new HSSFWorkbook();
+	String arq;
 
 	public TelaListarPontosCriticos(ArrayList<ObjetoSim> objeto,
 			ArrayList<Classes> classes, int qtd, String nivel, GerarDados dados) {
@@ -43,7 +51,7 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame implements KeyL
 		this.classes = classes;
 		this.dados = dados;
 		iniciarHash();
-
+		
 		initComponents();
 		if (nivel.equalsIgnoreCase("classes")) {
 			this.iniciarTabelaClasses();
@@ -59,9 +67,52 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame implements KeyL
 		}
 
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-
+		
+		gerarExcel();
 	}
 
+	public void gerarExcel (){
+		
+	
+		HSSFSheet aba2 = workbook.createSheet("Metodos");
+		
+		for (int i = 0; i < qtd; i++) {
+			Classes c = classes.get(i);
+			
+			HSSFRow row = aba2.createRow(i);
+			row.createCell(0).setCellValue(c.componente);
+			row.createCell(1).setCellValue(c.nome);
+			row.createCell(2).setCellValue(c.pesoModificacao);
+			
+		}
+	
+	HSSFSheet aba1 = workbook.createSheet("Classes");
+		
+		for (int i = 0; i < qtd; i++) {
+			ObjetoSim c = objeto.get(i);
+			String classe = c.classe;
+			
+			HSSFRow row = aba1.createRow(i);
+			row.createCell(0).setCellValue(classeComponente.get(classe));
+			row.createCell(1).setCellValue(classe);
+			row.createCell(2).setCellValue(c.metodo);
+			row.createCell(3).setCellValue(c.caminhoMetodo.size());
+		}
+	
+		try {
+			FileOutputStream arquivoSaida = new FileOutputStream(new File("pontosCriticos_"+this.arq));
+			workbook.write(arquivoSaida);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		
+	}
+	
+	
+	
+	
 	private void iniciarTabelaObjetos() {
 
 		tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -77,7 +128,7 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame implements KeyL
 			tabela.setValueAt(classeComponente.get(classe), i, 0);
 			tabela.setValueAt(classe, i, 1);
 			tabela.setValueAt(c.metodo, i, 2);
-			tabela.setValueAt(c.caminhoMetodo.size(), i, 3);
+			tabela.setValueAt(c.impacto, i, 3);
 		}
 	}
 
@@ -136,7 +187,7 @@ public class TelaListarPontosCriticos extends javax.swing.JFrame implements KeyL
 
 		jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		jLabel1.setText("Lista de Pontos CrÃ­ticos");
+		jLabel1.setText("Lista de Pontos Críticos");
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
 				jPanel1);

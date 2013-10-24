@@ -4,10 +4,14 @@
  */
 package changeexplorer;
 
+
 import java.awt.Event;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -24,6 +28,13 @@ import javax.swing.event.ListSelectionListener;
 
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+
 /**
  * 
  * @author Mivian
@@ -38,11 +49,13 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 			vecdisconnected, posicoes;
 	private int f3, contP;
 	private GerarDados dados;
-
+	private HSSFWorkbook workbook = new HSSFWorkbook();
+	public String arq;
+	
 	/**
 	 * Creates new form TelaMostrarDados
 	 */
-	public TelaMostrarDados(GerarDados dados) {
+	public TelaMostrarDados(GerarDados dados, String arq) {
 
 		this.dados = dados;
 
@@ -70,12 +83,23 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		gerarTUBES();
 		gerarTENDRILS();
 		gerarDISCONNECTED();
+
+		this.arq = arq.replace(".clu", ".xls");
+		
+		try {
+			FileOutputStream arquivoSaida = new FileOutputStream(new File("componentes_"+this.arq));
+			workbook.write(arquivoSaida);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 	}
 
 	public void gerarLSCC() {
 
 		ArrayList<Classes> lscc = dados.getLscc();
-
+		HSSFSheet aba1 = workbook.createSheet("LSCC");
+		
 		int x = lscc.get(0).pesoModificacao;
 		System.out.println("$" + x);
 		// vetorLscc = new int [x+1];
@@ -91,8 +115,14 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 
 		for (int i = 0; i < lscc.size(); i++) {
 			Classes c = lscc.get(i);
+			
 			tabelaLSCC.setValueAt(c.nome, i, 0);
 			tabelaLSCC.setValueAt(c.pesoModificacao, i, 1);
+			
+			HSSFRow row = aba1.createRow(i);
+			row.createCell(0).setCellValue(c.nome);
+			row.createCell(1).setCellValue(c.pesoModificacao);
+			
 			histoLscc[c.pesoModificacao]++;
 			veclscc.add(c.pesoModificacao);
 		}
@@ -102,7 +132,8 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 	public void gerarIN() {
 
 		ArrayList<Classes> in = dados.getIn();
-
+		HSSFSheet aba2 = workbook.createSheet("IN");
+		
 		tabelaIN.setModel(new javax.swing.table.DefaultTableModel(new Object[in
 				.size()][3], new String[] { "Classe", "Impacto" }));
 
@@ -116,6 +147,11 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		for (int i = 0; i < in.size(); i++) {
 			tabelaIN.setValueAt(in.get(i).nome, i, 0);
 			tabelaIN.setValueAt(in.get(i).pesoModificacao, i, 1);
+			
+			HSSFRow row = aba2.createRow(i);
+			row.createCell(0).setCellValue(in.get(i).nome);
+			row.createCell(1).setCellValue(in.get(i).pesoModificacao);
+						
 			histoIn[in.get(i).pesoModificacao]++;
 			vecin.add(in.get(i).pesoModificacao);
 		}
@@ -124,7 +160,8 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 	public void gerarOUT() {
 
 		ArrayList<Classes> out = dados.getOut();
-
+		HSSFSheet aba3 = workbook.createSheet("OUT");
+		
 		tabelaOUT
 				.setModel(new javax.swing.table.DefaultTableModel(
 						new Object[out.size()][2], new String[] { "Classe",
@@ -140,6 +177,12 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		for (int i = 0; i < out.size(); i++) {
 			tabelaOUT.setValueAt(out.get(i).nome, i, 0);
 			tabelaOUT.setValueAt(out.get(i).pesoModificacao, i, 1);
+			
+			HSSFRow row = aba3.createRow(i);
+			row.createCell(0).setCellValue(out.get(i).nome);
+			row.createCell(1).setCellValue(out.get(i).pesoModificacao);
+
+			
 			histoOut[out.get(i).pesoModificacao]++;
 			vecout.add(out.get(i).pesoModificacao);
 		}
@@ -148,7 +191,8 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 	public void gerarTUBES() {
 
 		ArrayList<Classes> tubes = dados.getTubes();
-
+		HSSFSheet aba4 = workbook.createSheet("TUBES");
+		
 		tabelaTUBES.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[tubes.size()][2],
 				new String[] { "Classe", "Impacto" }));
@@ -171,6 +215,12 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		for (int i = 0; i < tubes.size(); i++) {
 			tabelaTUBES.setValueAt(tubes.get(i).nome, i, 0);
 			tabelaTUBES.setValueAt(tubes.get(i).pesoModificacao, i, 1);
+			
+			HSSFRow row = aba4.createRow(i);
+			row.createCell(0).setCellValue(tubes.get(i).nome);
+			row.createCell(1).setCellValue(tubes.get(i).pesoModificacao);
+
+			
 			histoTubes[tubes.get(0).pesoModificacao]++;
 			vectubes.add(tubes.get(i).pesoModificacao);
 		}
@@ -180,7 +230,8 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 	public void gerarTENDRILS() {
 
 		ArrayList<Classes> tendrils = dados.getTendrils();
-	
+		HSSFSheet aba5 = workbook.createSheet("TENDRILS");
+		
 		tabelaTENDRILS
 				.setModel(new javax.swing.table.DefaultTableModel(
 						new Object[tendrils.size()][2], new String[] { "Classe",
@@ -196,6 +247,11 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		for (int i = 0; i < tendrils.size(); i++) {
 			tabelaTENDRILS.setValueAt(tendrils.get(i).nome, i, 0);
 			tabelaTENDRILS.setValueAt(tendrils.get(i).pesoModificacao, i, 1);
+			
+			HSSFRow row = aba5.createRow(i);
+			row.createCell(0).setCellValue(tendrils.get(i).nome);
+			row.createCell(1).setCellValue(tendrils.get(i).pesoModificacao);
+			
 			histoTendrils[tendrils.get(i).pesoModificacao]++;
 			vectendrils.add(tendrils.get(i).pesoModificacao);
 		}
@@ -204,8 +260,8 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 	public void gerarDISCONNECTED() {
 
 		ArrayList<Classes> disconnected = dados.getDisconnected();
-		System.out.println("TAM = "+disconnected.size());
-
+		HSSFSheet aba6 = workbook.createSheet("DISCONNECTED");
+		
 		tabelaDISCONNECTED
 				.setModel(new javax.swing.table.DefaultTableModel(
 						new Object[disconnected.size()][2], new String[] { "Classe",
@@ -221,6 +277,11 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 		for (int i = 0; i < disconnected.size(); i++) {
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).nome, i, 0);
 			tabelaDISCONNECTED.setValueAt(disconnected.get(i).pesoModificacao, i, 1);
+			
+			HSSFRow row = aba6.createRow(i);
+			row.createCell(0).setCellValue(disconnected.get(i).nome);
+			row.createCell(1).setCellValue(disconnected.get(i).pesoModificacao);
+			
 			histoDisconnected[disconnected.get(i).pesoModificacao]++;
 			vecdisconnected.add(disconnected.get(i).pesoModificacao);
 		}
@@ -636,7 +697,6 @@ public class TelaMostrarDados extends javax.swing.JFrame implements KeyListener 
 			}
 			else{
 				int p = (int)posicoes.get(contP);
-				System.out.println("LINHA = "+p);
 				tabelaAux.setRowSelectionInterval(p, p);
 				contP++;
 				ListSelectionModel selectionModel = tabelaAux.getSelectionModel();  

@@ -61,7 +61,7 @@ public class TelaMostrarCaminho extends javax.swing.JFrame implements KeyListene
             classe = visitado.getNomeClasseMetodo();
             metodo = visitado.getNomeMetodo();
             this.jTable1.setValueAt(classe, i, 0);
-            this.jTable1.setValueAt(classe, i, 1);
+            this.jTable1.setValueAt(metodo, i, 1);
 		}
 	}
 
