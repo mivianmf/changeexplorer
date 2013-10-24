@@ -226,13 +226,7 @@ class TelaInicial extends javax.swing.JFrame {
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-               
-    	this.caminhoArqSim = "C:/Users/Mivian/Documents/Arquivos .sim/logisim.sim";
-    	this.caminhoArqClu = "C:/Users/Mivian/Documents/Arquivos .clu/logisim.clu";
-    	this.caminhoArqNet = "C:/Users/Mivian/Documents/Arquivos .net/logisim.net";
-    	
-    	
-    	
+                	
         if (this.caminhoArqSim.contains(".sim")){
         TratarArquivoSim tratarSim = new TratarArquivoSim(caminhoArqSim);
         TratarArquivoNet tratarNet = new TratarArquivoNet(caminhoArqNet);
@@ -244,8 +238,9 @@ class TelaInicial extends javax.swing.JFrame {
         
         GerarDados gerarDados = new GerarDados(objetosSim, classes, componentes);
         
+        String [] aux = (caminhoArqClu.trim()).split("/");
         
-        TelaMostrarDados telaDados = new TelaMostrarDados(gerarDados);
+        TelaMostrarDados telaDados = new TelaMostrarDados(gerarDados, aux[aux.length-1]);
         telaDados.setVisible(true);
         telaDados.setLocation(350,5);
         telaDados.setResizable(false);

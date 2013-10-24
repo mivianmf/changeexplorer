@@ -92,12 +92,12 @@ public class Histograma extends JFrame {
 				yaxis, disconnected, orientation, show, toolTips, urls);
 		
 		  try {  
-			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/lscc.png"), chartlscc, 700, 600);
-			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/in.png"), chartin, 700, 600);
-			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/out.png"), chartout, 700, 600);
-			    //ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/tubes.png"), chartubes, 700, 600);
-			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/tendrils.png"), charttendrils, 700, 600);
-			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/disconnected.png"), chartdisconnected, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"lscc.png"), chartlscc, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"in.png"), chartin, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"out.png"), chartout, 700, 600);
+			    //ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"tubes.png"), chartubes, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"tendrils.png"), charttendrils, 700, 600);
+			    ChartUtilities.saveChartAsPNG(new java.io.File("./src/imagens/"+dados.arq+"disconnected.png"), chartdisconnected, 700, 600);
 			
 		  } catch (IOException e) {  
 			    // TODO Auto-generated catch block  

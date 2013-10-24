@@ -1,5 +1,6 @@
 package changeexplorer;
 
+import java.lang.reflect.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class GerarDados {
 		mapearClasses();
 		iniciarHash();
 		ordenarArrays();
-
+		
 	}
 
 	public void iniciarHash() {
@@ -96,11 +97,23 @@ public class GerarDados {
 		for (int i = 0; i < classes.size(); i++) {
 			classe = classes.get(i);
 			componente = this.codigoComponente(componentes.get(i));
-			passos = map.get(classe).size();
+			passos = calcularPesoClasse(map.get(classe));
 			objetosClasses.add(new Classes(classe, componente, passos));
 		}
 	}
 
+	private int calcularPesoClasse (ArrayList<ObjetoSim> metodos){
+		int somapassos = 0;
+		
+		for (ObjetoSim obj : metodos) {
+			somapassos+= obj.getImpacto();
+		}
+		
+		return somapassos;
+		
+	}
+	
+	
 	private void mapearClasses() {
 
 		Integer componente;
@@ -195,7 +208,7 @@ public class GerarDados {
 		objetosClasses = this.ordenarClasses(objetosClasses);
 
 		// ordenar array de m�todos
-		metodos = this.ordenarMetodos();
+		//metodos = this.ordenarMetodos(this.metodos);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -217,27 +230,6 @@ public class GerarDados {
 		});
 
 		return objetos;
-	}
-
-	public ArrayList<ObjetoSim> ordenarMetodos() {
-
-		Collections.sort(this.metodos, new Comparator() {
-			public int compare(Object obj1, Object obj2) {
-				ObjetoSim a1 = (ObjetoSim) obj1;
-				ObjetoSim a2 = (ObjetoSim) obj2;
-				if (a1.caminhoMetodo.size() > a2.caminhoMetodo.size())
-					return -1;
-				else {
-					if (a1.caminhoMetodo.size() < a2.caminhoMetodo.size())
-						return 1;
-					else
-						return 0;
-				}
-
-			}
-		});
-
-		return metodos;
 	}
 
 	// Gets

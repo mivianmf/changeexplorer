@@ -7,6 +7,8 @@ package changeexplorer;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -49,8 +51,10 @@ public class TelaMostrarMetodos extends javax.swing.JFrame implements
 
 	private void iniciarTabelaObjetos() {
 		
+		this.objeto = this.ordenarMetodos(objeto);
 		int qtd = objeto.size();
-
+		
+		
 		tabela.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[qtd][2], new String[] { "Metodo", "Impacto" }));
 
@@ -64,10 +68,34 @@ public class TelaMostrarMetodos extends javax.swing.JFrame implements
 			ObjetoSim c = objeto.get(i);
 			classe = c.classe;
 			tabela.setValueAt(c.metodo, i, 0);
-			tabela.setValueAt(c.caminhoMetodo.size(), i, 1);
+			tabela.setValueAt(c.impacto, i, 1);
 		}
 	}
 
+	
+	
+	public ArrayList<ObjetoSim> ordenarMetodos(ArrayList<ObjetoSim>metodos) {
+
+		Collections.sort(metodos, new Comparator() {
+			public int compare(Object obj1, Object obj2) {
+				ObjetoSim a1 = (ObjetoSim) obj1;
+				ObjetoSim a2 = (ObjetoSim) obj2;
+				if (a1.impacto > a2.impacto)
+					return -1;
+				else {
+					if (a1.impacto < a2.impacto)
+						return 1;
+					else
+						return 0;
+				}
+
+			}
+		});
+
+		return metodos;
+	}
+
+	
 	
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed"
